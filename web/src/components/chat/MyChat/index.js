@@ -14,7 +14,7 @@ import {
 } from 'stream-chat-react';
 import 'stream-chat-react/dist/css/v2/index.css';
 
-const apiKey = '';
+const apiKey = process.env.NEXT_PUBLIC_CHAT_KEY;
 
 
 
@@ -29,7 +29,6 @@ const MyChat = ({ token, userId }) => {
     userData: { id: userId },
   });
 
-  //const client = getstream.connect(apiKey, null, appId, streamConnectOptions);
   if (!client) return <div>Loading...</div>;
 
   const channel = client.channel('messaging', {
