@@ -2,6 +2,8 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "../components/core/Providers";
 
+import PrivateRoute from "../components/core/PrivateRoute";
+
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata = {
@@ -13,7 +15,13 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <Providers>
-        <body className={inter.className}>{children}</body>
+
+        <body className={inter.className}>
+          <PrivateRoute>
+            {children}
+          </PrivateRoute>
+        </body>
+
       </Providers>
     </html>
   );
