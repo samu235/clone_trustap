@@ -1,0 +1,18 @@
+.container {
+    opacity: 1;
+    position: relative;
+    top: 0;
+    left: 0;
+    border:none;
+    border-radius: 50%;
+    width: 20px;
+    height: 20px;
+}
+
+.hide {
+    border: 3px solid var(--primart-color);
+}
+
+.hide>* {
+    opacity: 0;
+}

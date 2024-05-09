@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const chatRouter = require('./routes/chat');
+const transationRouter = require('./routes/transations');
 const dotenv = require('dotenv');
 const resultdotenv = dotenv.config()
 
@@ -15,6 +16,7 @@ app.use(cors());
 //app.use(loggerMiddleware);
 app.use(express.json());
 app.use('/chat',chatRouter)
+app.use('/transation',transationRouter)
 
 //app.use(errorHandlerMiddleware);
 

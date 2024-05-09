@@ -12,13 +12,12 @@ const serverClient = StreamChat.getInstance(CHAT_KEY, CHAT_SECRET)
 // se tendria que comprobar si el usuario existe y si esta logado con un middelware, pero no vamos a hacer sobre ingenieria y esto es un ejemplo
 router.get('/getTocken/:user', (req, res) => {
   const user = req.params.user;
-  console.log(">>>user",user)
 
   try {
     const token = serverClient.createToken(user)
     res.json(token)
   } catch (error) {
-    console.log("createIdSesion -- error", error)
+    console.log("/getTocken/:user -- error", error)
     res.status(400).send({ error });
   }
 

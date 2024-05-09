@@ -15,13 +15,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <Providers>
-
         <body className={inter.className}>
           <PrivateRoute>
             {children}
           </PrivateRoute>
         </body>
-
       </Providers>
     </html>
   );
