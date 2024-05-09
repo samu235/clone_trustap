@@ -1,11 +1,11 @@
 
-const newTransactionService = ({
+const newTransactionService = async({
   idUserBuller = null,
   idUserSeller = null,
   price,
   name
 }) => {
-  fetch(`${process.env.NEXT_PUBLIC_API_URL}transation/new`,
+  return fetch(`${process.env.NEXT_PUBLIC_API_URL}transation/new`,
     {
       method: 'POST',
       headers: {
@@ -23,9 +23,6 @@ const newTransactionService = ({
         throw new Error('Error en la petición.');
       }
       return response.json();
-    })
-    .then(data => {
-      console.log('Respuesta del servidor:', data);
     })
     .catch(error => {
       console.error('Error:', error);
