@@ -30,6 +30,48 @@ router.post('/new', async (req, res) => {
         res.status(400).send({ error });
     }
 
+    res.status(404).send({});
+});
+router.post('/confirm', async (req, res) => {
+    const {
+        idUserBuller,
+        idUserSeller,
+        id
+    } = req.body;
+
+    const querry = "UPDATE `transaction` SET `idUserBuller` = ?, `iduserSeller` = ?,`state`=?,`uuid`=? WHERE (`id` = ?);"
+    try {
+        result = await sql.query(querry, [idUserBuller, idUserSeller, 2, null, id])
+        if (result?.affectedRows == 1) {
+            res.json({
+                status: 'ok',
+                id: result?.insertId
+            });
+            return
+        }
+    } catch (error) {
+        console.log(" -- transation error confirm", error)
+        res.status(400).send({ error });
+    }
+
+    res.status(404).send({});
+});
+
+router.get('/getBySlug/:slug', async (req, res) => {
+    const slug = req.params.slug;
+    const querry = "SELECT * FROM clone_trustap.transaction where uuid =?;"
+    try {
+        result = await sql.query(querry, [slug])
+        if (result?.length == 1 && result?.[0]?.id) {
+            res.json(result[0]);
+            return
+        }
+    } catch (error) {
+        console.log(" -- transation error new", error)
+        res.status(400).send({ error });
+    }
+
     res.status(400).send({});
+
 });
 module.exports = router;
