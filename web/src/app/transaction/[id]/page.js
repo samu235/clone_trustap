@@ -45,7 +45,7 @@ export default function Transaction() {
         </div>
         {transaction?.state == 1 && <div><Button onClick={() => router.push(`/your_link_copy/${transaction?.uuid}`)}>Ir a link</Button></div>}
         {transaction?.state == 2 &&
-            transaction?.iduserSeller === userId &&
+            transaction?.idUserBuller === userId &&
             <div><Button onClick={initProcesPay}>Pagar</Button></div>}
 
 
