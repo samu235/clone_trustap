@@ -33,7 +33,7 @@ export default function Transactions() {
     }, [userId])
 
     const handleScroll = () => {
-        debugger
+
         if (
             window.innerHeight + document.documentElement.scrollTop >=
             document.documentElement.offsetHeight / 2

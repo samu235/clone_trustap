@@ -6,8 +6,7 @@ import StripeCard from "@/components/pay/StripeCard";
 export default function Home() {
   return (
     <main className={styles.main}>
-      {/*<MyChat />*/}
-      <StripeCard/>
+      
     </main>
   );
 }

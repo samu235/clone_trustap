@@ -1,8 +1,8 @@
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { Providers } from "../components/core/Providers";
-
 import PrivateRoute from "../components/core/PrivateRoute";
+import BarMenu from "@/components/ui/BarMenu";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,6 +19,7 @@ export default function RootLayout({ children }) {
           <PrivateRoute>
             {children}
           </PrivateRoute>
+          <BarMenu/>
         </body>
       </Providers>
     </html>
