@@ -3,7 +3,7 @@ const router = express.Router();
 const dotenv = require('dotenv');
 const sql = require('../sql');
 const { v4: uuidv4 } = require('uuid');
-const { getAllTrasaction } = require('../controller/transation');
+const { getAllTrasaction, updateStateTransation } = require('../controller/transation');
 
 dotenv.config()
 
@@ -43,7 +43,7 @@ router.post('/confirm', async (req, res) => {
     const querry = "UPDATE `transaction` SET `idUserBuller` = ?, `iduserSeller` = ?,`state`=?,`uuid`=? WHERE (`id` = ?);"
     try {
         result = await sql.query(querry, [idUserBuller, idUserSeller, 2, null, id])
-        console.log("result",result)
+        console.log("result", result)
         if (result?.affectedRows == 1) {
             res.json({
                 status: 'ok',
@@ -96,10 +96,10 @@ router.get('/getById/:id', async (req, res) => {
 
 });
 router.get('/getAll/:page/:sizePage/:userId?', async (req, res) => {
-    const {userId,sizePage,page} = req.params;
+    const { userId, sizePage, page } = req.params;
     try {
-        const response =await getAllTrasaction({userId,sizePage,page})
-        console.log(">>> response",response)
+        const response = await getAllTrasaction({ userId, sizePage, page })
+        console.log(">>> response", response)
         res.json(response);
         return
     } catch (error) {
@@ -108,5 +108,26 @@ router.get('/getAll/:page/:sizePage/:userId?', async (req, res) => {
         return
     }
 
+});
+
+router.post('/sendedItem', async (req, res) => {
+    const { id } = req.body;
+    try {
+        const result = await updateStateTransation(id, 4)
+        res.json(result);
+
+    } catch (error) {
+        res.status(404).send({});
+    }
+});
+router.post('/delivered', async (req, res) => {
+    const { id } = req.body;
+    try {
+        const result = await updateStateTransation(id, 5)
+        res.json(result);
+
+    } catch (error) {
+        res.status(404).send({});
+    }
 });
 module.exports = router;

@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/ui/Button";
 import confirmTransactionService from "@/services/trasaction/confirmTransactionService";
 import getTransactionBySlugService from "@/services/trasaction/getTransactionBySlugService";
 import { getUserSelect } from "@/store/user/selectors";
@@ -43,7 +44,7 @@ export default function YourLink() {
     {transaction?.idUserBuller && <p>Comprador: {transaction?.idUserBuller}</p>}
     {transaction?.iduserSeller && <p>¿quieres comprarlo?</p>}
     {transaction?.idUserBuller && <p>¿quieres venderlo? </p>}
-    <button onClick={send}>SI</button>
+    <Button onClick={send}>SI</Button>
   </div>
 
 }
