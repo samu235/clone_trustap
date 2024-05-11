@@ -3,6 +3,7 @@ const router = express.Router();
 const dotenv = require('dotenv');
 const sql = require('../sql');
 const { v4: uuidv4 } = require('uuid');
+const { getAllTrasaction } = require('../controller/transation');
 
 dotenv.config()
 
@@ -88,9 +89,24 @@ router.get('/getById/:id', async (req, res) => {
     } catch (error) {
         console.log(" -- transation error getById", error)
         res.status(400).send({ error });
+        return
     }
 
     res.status(400).send({});
+
+});
+router.get('/getAll/:page/:sizePage/:userId?', async (req, res) => {
+    const {userId,sizePage,page} = req.params;
+    try {
+        const response =await getAllTrasaction({userId,sizePage,page})
+        console.log(">>> response",response)
+        res.json(response);
+        return
+    } catch (error) {
+        console.log(" -- transation error getById", error)
+        res.status(400).send({ error });
+        return
+    }
 
 });
 module.exports = router;
