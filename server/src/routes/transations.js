@@ -42,10 +42,11 @@ router.post('/confirm', async (req, res) => {
     const querry = "UPDATE `transaction` SET `idUserBuller` = ?, `iduserSeller` = ?,`state`=?,`uuid`=? WHERE (`id` = ?);"
     try {
         result = await sql.query(querry, [idUserBuller, idUserSeller, 2, null, id])
+        console.log("result",result)
         if (result?.affectedRows == 1) {
             res.json({
                 status: 'ok',
-                id: result?.insertId
+                id: id
             });
             return
         }

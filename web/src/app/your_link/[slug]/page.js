@@ -26,12 +26,14 @@ export default function YourLink() {
       idUserSeller: transaction?.idUserSeller || userId,
       id: transaction?.id
     }).then(result => {
-      console.log("result",result)
+      if (result?.id == transaction?.id){
+        router.push(`/transaction/${transaction?.id}`)
+      }
     })
   }
-if(transaction?.error){
-  return <h1>enlace no valido</h1>
-}
+  if (transaction?.error) {
+    return <h1>enlace no valido</h1>
+  }
   return <div>
     <h1>Nueva transacción</h1>
     <h2>{transaction?.name}</h2>
