@@ -67,7 +67,25 @@ router.get('/getBySlug/:slug', async (req, res) => {
             return
         }
     } catch (error) {
-        console.log(" -- transation error new", error)
+        console.log(" -- transation error getBySlug", error)
+        res.status(400).send({ error });
+    }
+
+    res.status(400).send({});
+
+});
+
+router.get('/getById/:id', async (req, res) => {
+    const id = req.params.id;
+    const querry = "SELECT * FROM transaction where id =?;"
+    try {
+        result = await sql.query(querry, [id])
+        if (result?.length == 1 && result?.[0]?.id) {
+            res.json(result[0]);
+            return
+        }
+    } catch (error) {
+        console.log(" -- transation error getById", error)
         res.status(400).send({ error });
     }
 

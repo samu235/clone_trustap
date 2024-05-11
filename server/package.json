@@ -17,6 +17,7 @@
     "express": "^4.19.2",
     "mysql2": "^3.9.7",
     "stream-chat": "^8.31.0",
+    "stripe": "^15.6.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
