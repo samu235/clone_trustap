@@ -3,19 +3,20 @@
 import confirmTransactionService from "@/services/trasaction/confirmTransactionService";
 import getTransactionBySlugService from "@/services/trasaction/getTransactionBySlugService";
 import { getUserSelect } from "@/store/user/selectors";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 export default function YourLink() {
-  const { slug } = useParams()
-  const [transaction, setTrasaction] = useState(null)
-  const userId = useSelector(getUserSelect)?.userId
+  const { slug } = useParams();
+  const [transaction, setTrasaction] = useState(null);
+  const userId = useSelector(getUserSelect)?.userId;
+  const router = useRouter();
   useEffect(() => {
     if (slug) {
       getTransactionBySlugService(slug).then(data => {
-        console.log(data)
-        setTrasaction(data)
+        console.log(data);
+        setTrasaction(data);
       })
     }
   }, [slug])

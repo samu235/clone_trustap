@@ -1,6 +1,6 @@
 //create-payment-intent
 
-const createPaymentIntentService = async ({idTransaction}) =>{
+const createPaymentIntentService = async (idTransaction) =>{
     return fetch(`${process.env.NEXT_PUBLIC_API_URL}pay/create-payment-intent`,
     {
       method: 'POST',
@@ -21,3 +21,4 @@ const createPaymentIntentService = async ({idTransaction}) =>{
       console.error('Error:', error);
     });
 }
+export default createPaymentIntentService

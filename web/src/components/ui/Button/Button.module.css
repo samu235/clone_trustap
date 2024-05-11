@@ -1,0 +1,7 @@
+
+.btn{
+    padding: 1rem;
+    border-radius: 30%;
+    background-color: var(--primart-color);
+    margin: 0.5rem;
+}

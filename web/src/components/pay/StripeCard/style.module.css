@@ -1,0 +1,13 @@
+.red{
+    background-color: rgb(255, 124, 124);
+}
+.green{
+    background-color: rgb(124, 255, 124);
+}
+.container_btn{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: flex-end;
+}
