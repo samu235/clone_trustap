@@ -1,6 +1,8 @@
 'use client'
+import { getUserSelect } from '@/store/user/selectors';
 import getTokenService from '../../../services/chat/getTokenService';
-import { useEffect, useState } from 'react';
+import { useEffect, useId, useMemo, useState } from 'react';
+import { useSelector } from 'react-redux';
 import {
   Chat,
   Channel,
@@ -18,7 +20,7 @@ const apiKey = process.env.NEXT_PUBLIC_CHAT_KEY;
 
 
 
-const MyChat = ({ token, userId }) => {
+const MyChat = ({ token, userId, hasChannelList = false, people = [] }) => {
   const filters = { members: { $in: [userId] }, type: 'messaging' };
   const options = { presence: true, state: true };
   const sort = { last_message_at: -1 };
@@ -31,13 +33,14 @@ const MyChat = ({ token, userId }) => {
 
   if (!client) return <div>Loading...</div>;
 
+  console.log("people =>", people)
   const channel = client.channel('messaging', {
-    members: [userId, 'samuel'],
+    members: people,
   });
 
   return (
     <Chat client={client}>
-      <ChannelList sort={sort} filters={filters} options={options} />
+      {hasChannelList && <ChannelList sort={sort} filters={filters} options={options} />}
       <Channel channel={channel}>
         <Window>
           <ChannelHeader />
@@ -50,19 +53,15 @@ const MyChat = ({ token, userId }) => {
   );
 };
 
-const wrapperChat = () => {
-  const [token, useToken] = useState(null)
-  const userId = 'samuel235'
-
-  useEffect(() => {
-    getTokenService(userId).then(e => {
-      console.log(">>>> e", e)
-      useToken(e);
-    })
-  }, [])
-
+const wrapperChat = ({ people }) => {
+  const { userId, token } = useSelector(getUserSelect)
+  const peopleFilter = useMemo(() => {
+    const filter = people?.filter(e => e !== userId)
+    return [...filter, userId]
+  }, [people, userId])
+  
   return <>
-    {token && <MyChat token={token} userId={userId}></MyChat>}
+    {token && people && <MyChat token={token} userId={userId} people={peopleFilter} />}
   </>
 }
 

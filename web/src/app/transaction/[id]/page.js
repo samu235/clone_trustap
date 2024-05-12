@@ -7,21 +7,26 @@ import getTransactionByIdService from "@/services/trasaction/getTransactionByIdS
 import { getUserSelect } from "@/store/user/selectors";
 import nameState from "@/utils/nameState";
 import { useParams, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useSelector } from "react-redux";
 import createPaymentIntentService from '@/services/pay/createPaymentIntentService';
 import sendenItemTransactionService from '@/services/trasaction/sendenItemTransactionService';
-
+import MyChat from '@/components/chat/MyChat'
 
 
 export default function Transaction() {
     const { id } = useParams()
     const [transaction, setTrasaction] = useState(null)
     const [clientSecret, setClientSecret] = useState(null)
+    const [viewChat, setViewChat] = useState(false)
     const router = useRouter();
     const userId = useSelector(getUserSelect)?.userId
-    
-    const fecthData =()=>{
+    const peopleChat = useMemo(() => {
+
+        return [transaction?.iduserSeller, transaction?.idUserBuller]
+    }, [transaction])
+
+    const fecthData = () => {
         getTransactionByIdService(id).then(e => {
             if (e?.id == id) setTrasaction(e)
         })
@@ -37,13 +42,11 @@ export default function Transaction() {
                 setClientSecret(result?.clientSecret)
             }
         })
-
     }
     const sendedItem = () => {
-        sendenItemTransactionService(id).then(()=>{
+        sendenItemTransactionService(id).then(() => {
             fecthData()
         })
-
     }
     return <div>
         <div>
@@ -61,8 +64,8 @@ export default function Transaction() {
         {transaction?.state == 3 && //pendiente de envio
             transaction?.iduserSeller === userId &&
             <div><Button onClick={sendedItem}>Ya lo he enviado</Button></div>}
-
-
+        {!viewChat && <div><Button onClick={() => setViewChat(true)}>Hablar con {userId === transaction?.iduserSeller ? 'comprador' : 'vendedor'}</Button></div>}
+        {viewChat && <MyChat people={peopleChat} />}
 
         <Modal
             isOpen={clientSecret}
@@ -73,7 +76,7 @@ export default function Transaction() {
         >
             <StripeCard clientSecret={clientSecret} close={() => setClientSecret(null)} idTrasaction={transaction?.id} />
         </Modal>
-    </div>
+    </div >
 
 
 

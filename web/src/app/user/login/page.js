@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import styles from './login.module.css'
 import { useRouter, } from 'next/navigation';
 import { useDispatch } from 'react-redux';
-import {setUser as setUserDispatch}from '../../../store/user/slice'
+import { loadUserThunk } from '@/store/user/thunk';
 
 export default function Login() {
   const [user, setUser] = useState('');
@@ -24,7 +24,7 @@ export default function Login() {
       return
     }
     setError(null)
-    dispacth(setUserDispatch({ userId: user }))
+    dispacth(loadUserThunk({ userId: user }))
     router.back();
   };
   return <div className={styles.container}>

@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { loadUserThunk } from './thunk';
 
 const initialState = {};
 
@@ -9,6 +10,12 @@ const slice = createSlice({
     setUser(state, action) {
       state.userId = action.payload?.userId || null;
     },
+  },
+  extraReducers: (builder) => {
+    builder.addCase(loadUserThunk.fulfilled, (state, action) => {
+      state.userId = action.payload?.userId || null;
+      state.token = action.payload?.token || null;
+    })
   },
 });
 
