@@ -3,7 +3,7 @@ const router = express.Router();
 const dotenv = require('dotenv');
 const sql = require('../sql');
 const { v4: uuidv4 } = require('uuid');
-const { getAllTrasaction, updateStateTransation } = require('../controller/transation');
+const { getAllTrasaction, updateStateTransation, openDisputeTransation } = require('../controller/transation');
 
 dotenv.config()
 
@@ -99,7 +99,6 @@ router.get('/getAll/:page/:sizePage/:userId?', async (req, res) => {
     const { userId, sizePage, page } = req.params;
     try {
         const response = await getAllTrasaction({ userId, sizePage, page })
-        console.log(">>> response", response)
         res.json(response);
         return
     } catch (error) {
@@ -124,6 +123,16 @@ router.post('/delivered', async (req, res) => {
     const { id } = req.body;
     try {
         const result = await updateStateTransation(id, 5)
+        res.json(result);
+
+    } catch (error) {
+        res.status(404).send({});
+    }
+});
+router.post('/OpenDispute', async (req, res) => {
+    const { id } = req.body;
+    try {
+        const result = await openDisputeTransation(id)
         res.json(result);
 
     } catch (error) {

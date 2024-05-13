@@ -12,6 +12,9 @@ import { useSelector } from "react-redux";
 import createPaymentIntentService from '@/services/pay/createPaymentIntentService';
 import sendenItemTransactionService from '@/services/trasaction/sendenItemTransactionService';
 import MyChat from '@/components/chat/MyChat'
+import openDisputeTransactionService from '@/services/trasaction/openDisputeTransactionService';
+import { ID_ADMIN } from '@/utils/constans';
+import styles from './style.module.css'
 
 
 export default function Transaction() {
@@ -22,8 +25,10 @@ export default function Transaction() {
     const router = useRouter();
     const userId = useSelector(getUserSelect)?.userId
     const peopleChat = useMemo(() => {
+        const init = [transaction?.iduserSeller, transaction?.idUserBuller]
+        if (transaction?.dispute) init.push(ID_ADMIN)
+        return init
 
-        return [transaction?.iduserSeller, transaction?.idUserBuller]
     }, [transaction])
 
     const fecthData = () => {
@@ -37,7 +42,6 @@ export default function Transaction() {
     const initProcesPay = () => {
         // TOOD seria conveniente no estar creando transacciones si ya estaban cradas, seria mejor hacer un guardado de esta en bbdd y recuperarla si existe
         createPaymentIntentService(id).then(result => {
-            console.log("result", result)
             if (result?.clientSecret) {
                 setClientSecret(result?.clientSecret)
             }
@@ -48,6 +52,13 @@ export default function Transaction() {
             fecthData()
         })
     }
+    const openDispute = () => {
+        openDisputeTransactionService(id).then(() => {
+            fecthData()
+        })
+    }
+
+
     return <div>
         <div>
             <p>name:{transaction?.name}</p>
@@ -56,6 +67,7 @@ export default function Transaction() {
             <p>Vendedor:{transaction?.iduserSeller}</p>
             <p>Precio:{transaction?.price}</p>
             <p>Estado:{nameState(transaction?.state)}</p>
+            {transaction?.dispute && <p className={styles.dispute}>Disputa abierta</p>}
         </div>
         {transaction?.state == 1 && <div><Button onClick={() => router.push(`/your_link_copy/${transaction?.uuid}`)}>Ir a link</Button></div>}
         {transaction?.state == 2 && //pendiente de pago
@@ -64,10 +76,14 @@ export default function Transaction() {
         {transaction?.state == 3 && //pendiente de envio
             transaction?.iduserSeller === userId &&
             <div><Button onClick={sendedItem}>Ya lo he enviado</Button></div>}
-        {!viewChat && <div><Button onClick={() => setViewChat(true)}>Hablar con {userId === transaction?.iduserSeller ? 'comprador' : 'vendedor'}</Button></div>}
+        {!transaction?.dispute && // control del chat
+            <div><Button onClick={openDispute}>Abrir disputa</Button></div>}
+
+        {!viewChat && // control del chat
+            <div><Button onClick={() => setViewChat(true)}>Hablar con {userId === transaction?.iduserSeller ? 'comprador' : 'vendedor'}</Button></div>}
         {viewChat && <MyChat people={peopleChat} />}
 
-        <Modal
+        <Modal 
             isOpen={clientSecret}
             /*onAfterOpen={afterOpenModal}
             onRequestClose={closeModal}

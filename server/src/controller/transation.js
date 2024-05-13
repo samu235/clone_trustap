@@ -42,5 +42,22 @@ exports.getAllTrasaction = async ({ userId, sizePage, page }) => {
         return { error };
     }
 }
+exports.openDisputeTransation = async (id) => {
+    const querry = "UPDATE `transaction` SET `dispute` = ? WHERE (`id` = ?);"
+    try {
+        result = await sql.query(querry, [1, id])
+        console.log("result", result)
+        if (result?.affectedRows == 1) {
+            return {
+                status: 'ok',
+                id: id
+            }
+        }
+    } catch (error) {
+        console.log(" -- transation error openDisputeTransation", error)
+        return { error };
+    }
+    return -1;
+}
 
 
