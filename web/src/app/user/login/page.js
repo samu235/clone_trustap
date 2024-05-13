@@ -30,6 +30,7 @@ export default function Login() {
   return <div className={styles.container}>
     <div className={styles.box}>
       <h1>Login</h1>
+      <p>Usar admin para entrar con un usuario administrador</p>
       <form onSubmit={handleSubmit}>
         <label>
           Usuario:

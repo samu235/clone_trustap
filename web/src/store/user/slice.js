@@ -15,6 +15,7 @@ const slice = createSlice({
     builder.addCase(loadUserThunk.fulfilled, (state, action) => {
       state.userId = action.payload?.userId || null;
       state.token = action.payload?.token || null;
+      state.admin = action.payload?.admin || null;
     })
   },
 });

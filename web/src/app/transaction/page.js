@@ -8,13 +8,13 @@ import { useSelector } from "react-redux"
 export default function Transactions() {
     const [transactions, setTransactions] = useState([]);
     const [pageControl, setPageControl] = useState({ currentPage: 0 })
-    const userId = useSelector(getUserSelect)?.userId
+    const {userId, admin} = useSelector(getUserSelect)
     const feching = useRef(false)
     const fecthData = () => {
         if (feching.current) return;
         feching.current = true;
         getTransactionAllService({
-            userId,
+            userId:admin?null:userId,
             page: pageControl?.currentPage + 1,
             sizePage: 15
         }).then(e => {
