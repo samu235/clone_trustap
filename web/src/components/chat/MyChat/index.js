@@ -53,7 +53,7 @@ const MyChat = ({ token, userId, hasChannelList = false, people = [] }) => {
   );
 };
 
-const wrapperChat = ({ people }) => {
+const WrapperChat = ({ people }) => {
   const { userId, token } = useSelector(getUserSelect)
   const peopleFilter = useMemo(() => {
     const filter = people?.filter(e => e !== userId)
@@ -65,4 +65,4 @@ const wrapperChat = ({ people }) => {
   </>
 }
 
-export default wrapperChat
+export default WrapperChat

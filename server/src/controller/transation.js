@@ -59,5 +59,17 @@ exports.openDisputeTransation = async (id) => {
     }
     return -1;
 }
-
+exports.getPriceTransactionID = async (id) => {
+    const querry = "SELECT price FROM clone_trustap.transaction where id= ?;"
+    try {
+        result = await sql.query(querry, [id])
+        if (result?.length===1) {
+            return result[0]?.price
+        }
+    } catch (error) {
+        console.log(" -- transation error openDisputeTransation", error)
+        return { error };
+    }
+    return -1;
+}
 

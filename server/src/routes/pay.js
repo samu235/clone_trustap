@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const dotenv = require('dotenv');
+const { getPriceTransactionID } = require('../controller/transation');
 
 dotenv.config()
 const STRIPE_SECRET = process.env.STRIPE_SECRET;
@@ -11,6 +12,15 @@ const stripe = require("stripe")(STRIPE_SECRET);
 // se tendria que comprobar si el usuario existe y si esta logado con un middelware, pero no vamos a hacer sobre ingenieria y esto es un ejemplo
 router.post("/create-payment-intent", async (req, res) => {
     const { idTransaction } = req.body;
+    let price = null
+    try {
+        price = await getPriceTransactionID(idTransaction);
+        console.log('>>>price',price)
+    } catch (error) {
+        res.send({
+            error
+        });
+    }
 
     // Create a PaymentIntent with the order amount and currency
     const paymentIntent = await stripe.paymentIntents.create({
